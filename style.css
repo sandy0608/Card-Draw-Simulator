@@ -1,0 +1,166 @@
+/* 1. 基本配置保持不變 */
+body {
+    background-color: #1a1a2e;
+    color: white;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+.container {
+    width: 98%; /* 稍微加寬容器，給放大後的左側更多空間 */
+    max-width: 1400px;
+    text-align: center;
+}
+
+/* 2. 左右版面：調整 left-panel 的數值 */
+.main-layout {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 40px; /* 增加間距，畫面才不會太擠 */
+    margin-top: 30px;
+}
+
+/* 左側：抽卡區 (放大到 480px) */
+.left-panel {
+    flex: 0 0 480px;      /* 從 350px 放大到 480px */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* 抽卡大卡片：同步放大 max-width */
+.card {
+    width: 100%;
+    max-width: 450px;     /* 大卡片本體寬度調大 */
+    background: #16213e;
+    border-radius: 20px;
+    padding: 20px;
+    border: 4px solid #444;
+    box-sizing: border-box;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+.card img {
+    width: 100%;          /* 圖片會填滿 450px 的卡片 */
+    border-radius: 12px;
+    display: block;
+}
+
+/* 右側：我的卡片盒 */
+.right-panel {
+    flex: 1;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 20px;
+    padding: 25px;
+    
+    /* --- 修正：強制顯示捲軸 --- */
+    height: 600px;         /* 固定高度 */
+    scroll;    /* 改為 scroll：不管卡片多不多，滑軌都會在那裡 */
+    overflow-x: hidden;    /* 隱藏左右晃動的滑軌 */
+    
+    border: 1px solid rgba(255,255,255,0.1);
+    box-shadow: inset 0 0 15px rgba(0,0,0,0.5);
+}
+
+/* --- 捲軸加粗與美化 --- */
+
+/* 1. 整條捲軸的寬度 (把 8px 改成 16px，變得很粗好點擊) */
+.right-panel::-webkit-scrollbar {
+    width: 16px;           
+}
+
+/* 2. 捲軸底部的軌道 */
+.right-panel::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.2); 
+    border-radius: 10px;
+    margin: 5px;           /* 讓軌道離邊緣有一點點距離 */
+}
+
+/* 3. 滑桿按鍵 (就是你按住拖曳的那塊) */
+.right-panel::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #f1c40f, #b8860b); /* 給滑桿一個漸層金色 */
+    border-radius: 10px;   /* 讓它變成長橢圓形 */
+    border: 3px solid #1a1a2e; /* 增加邊框，讓滑桿看起來更立體、更好抓 */
+}
+
+/* 4. 滑鼠移上去時滑桿變亮 (增加手感) */
+.right-panel::-webkit-scrollbar-thumb:hover {
+    background: #fff7d1;   /* 變成淺金色 */
+    cursor: pointer;
+}
+
+/* 3. 背包小卡片：徹底解決上下間距過大的問題 */
+.inventory-item {
+    width: 80px;           /* 固定寬度 */
+    height: 105px;         /* 關鍵：強制縮短外框高度，這樣上下排才會靠近 */
+    background: #252a34;
+    border-radius: 8px;
+    padding: 5px;
+    border: 2px solid #555;
+    text-align: center;
+    box-sizing: border-box;
+    
+    align-self: flex-start; /* 確保不會被拉長 */
+    overflow: hidden;       /* 確保內容不超出 */
+}
+
+/* 確保小圖的大小乖乖聽話 */
+.inventory-item img {
+    width: 70px;           /* 略小於 80px，留一點白邊比較好看 */
+    height: 70px;          /* 強制小圖變成正方形 */
+    object-fit: cover;     /* 裁切圖片中心，不變形 */
+    border-radius: 4px;
+    margin: 0 auto;
+    display: block;
+}
+
+/* 調整背包容器的間距 - 最終修正版 */
+.inventory-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px 10px;         /* 上下 5px，左右 10px */
+    justify-content: flex-start;
+    
+    /* --- 關鍵新增這行，這才是控制「列與列」距離的重點 --- */
+    align-content: flex-start; 
+    
+    align-items: flex-start;
+    min-height: 800px;
+}
+
+/* 縮小小名字的字體，避免擠到外面 */
+.mini-name {
+    font-size: 11px;
+    color: white;
+    margin-top: 5px;
+    width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis; /* 名字太長變... */
+}
+/* 稀有度顏色 */
+.ssr { border-color: gold; box-shadow: 0 0 15px gold; }
+.sr { border-color: purple; }
+.r { border-color: blue; }
+
+/* 按鈕樣式 (也稍微放大一點點) */
+button {
+    padding: 15px 50px;
+    font-size: 20px;
+    cursor: pointer;
+    background: #f1c40f;
+    border: none;
+    border-radius: 50px;
+    font-weight: bold;
+    margin-bottom: 25px;
+    transition: 0.2s;
+}
+
+button:hover {
+    background: #f39c12;
+    transform: scale(1.05);
+}
